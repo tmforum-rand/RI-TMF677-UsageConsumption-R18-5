@@ -1,0 +1,2372 @@
+---
+swagger: "2.0"
+info:
+  description: "## TMF API Reference: TMF677 - Usage Consumption\n\n### Release: 18.5\
+    \ - December 2018\n\nThis API covers the consumption follow up function providing\
+    \ ongoing information about usages related to any subscribed communication products\
+    \ (voice, data, TV,…) without having to wait the invoice production. These information\
+    \ may concern usages charged on a bucket supervised or not and so the remaining\
+    \ credits on the bucket. It allows customers or users to be informed on usages\
+    \ done and remaining credits on the buckets that they consume under their purchased\
+    \ offers and options.\n\nThe usage consumption API allow to view at a given point\
+    \ the balance and the consumption counters of the various buckets (SMS, Voice,\
+    \ Data for example) that one or more user(s) consume with each of his devices,\
+    \ according to the purchased offers and options.\n\n### Resources \n- **usageConsumptionReport**\
+    \ : an usage consumption report retrieves the data related to these balances and\
+    \ various consumption counters and calculated at the time of the request by the\
+    \ server.\n- **usageConsumptionReportRequest** : used to manage the calculation\
+    \ request of an usage consumption report.\n\n### Operations\nThe use of the both\
+    \ resources described in this document is conditioned by the capability of the\
+    \ server:\n- If the server could perform the calculation and so give the usage\
+    \ consumption report in synchronous mode according to the criteria given by the\
+    \ API requester, a GET operation with filter criteria on usageConsumptionReport\
+    \ resource could be used. We could accept to use a GET operation in this context\
+    \ because the server calculates the data given in the usage consumption report\
+    \ without necessarily store it.\n- We must also anticipate the use case where\
+    \ the server could only give an asynchronous response to the calculation of an\
+    \ usage consumption report requested by the API requester. In this case, a POST\
+    \ operation on usageConsumptionReportRequest could be sent by the API Requester\
+    \ asking the server that a usage consumption report calculation has to be performed.\
+    \ Then, the API requester could follow the process with a GET operation on this\
+    \ same resource retrieving the status of the request. The server could also use\
+    \ the notification pattern to inform the API requester that the usage consumption\
+    \ report is available\n\nCopyright © TM Forum 2018. All Rights Reserved."
+  version: "4.0.0"
+  title: "API UsageConsumption"
+host: "localhost:8080"
+basePath: "/tmf-api"
+tags:
+- name: "usageConsumptionReport"
+- name: "usageConsumptionReportRequest"
+- name: "notification listeners (client side)"
+- name: "events subscription"
+schemes:
+- "http"
+consumes:
+- "application/json;charset=utf-8"
+produces:
+- "application/json;charset=utf-8"
+paths:
+  /usageConsumptionReport:
+    get:
+      tags:
+      - "usageConsumptionReport"
+      summary: "List or find UsageConsumptionReport objects"
+      description: "This operation list or find UsageConsumptionReport entities"
+      operationId: "listUsageConsumptionReport"
+      parameters:
+      - name: "fields"
+        in: "query"
+        description: "Comma-separated properties to be provided in response"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "Requested index for start of resources to be provided in response"
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Requested number of resources to be provided in response"
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Success"
+          headers:
+            X-Total-Count:
+              type: "integer"
+              description: "Total number of items matching criteria"
+            X-Result-Count:
+              type: "integer"
+              description: "Actual number of items returned in the response body"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/UsageConsumptionReport"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "UsageConsumptionReport"
+  /usageConsumptionReport/{id}:
+    get:
+      tags:
+      - "usageConsumptionReport"
+      summary: "Retrieves a UsageConsumptionReport by ID"
+      description: "This operation retrieves a UsageConsumptionReport entity. Attribute\
+        \ selection is enabled for all first level attributes."
+      operationId: "retrieveUsageConsumptionReport"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Identifier of the UsageConsumptionReport"
+        required: true
+        type: "string"
+      - name: "fields"
+        in: "query"
+        description: "Comma-separated properties to provide in response"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/UsageConsumptionReport"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "UsageConsumptionReport"
+    delete:
+      tags:
+      - "usageConsumptionReport"
+      summary: "Deletes a UsageConsumptionReport"
+      description: "This operation deletes a UsageConsumptionReport entity."
+      operationId: "deleteUsageConsumptionReport"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Identifier of the UsageConsumptionReport"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Deleted"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "UsageConsumptionReport"
+  /usageConsumptionReportRequest:
+    get:
+      tags:
+      - "usageConsumptionReportRequest"
+      summary: "List or find UsageConsumptionReportRequest objects"
+      description: "This operation list or find UsageConsumptionReportRequest entities"
+      operationId: "listUsageConsumptionReportRequest"
+      parameters:
+      - name: "fields"
+        in: "query"
+        description: "Comma-separated properties to be provided in response"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "Requested index for start of resources to be provided in response"
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Requested number of resources to be provided in response"
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Success"
+          headers:
+            X-Total-Count:
+              type: "integer"
+              description: "Total number of items matching criteria"
+            X-Result-Count:
+              type: "integer"
+              description: "Actual number of items returned in the response body"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/UsageConsumptionReportRequest"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "UsageConsumptionReportRequest"
+    post:
+      tags:
+      - "usageConsumptionReportRequest"
+      summary: "Creates a UsageConsumptionReportRequest"
+      description: "This operation creates a UsageConsumptionReportRequest entity."
+      operationId: "createUsageConsumptionReportRequest"
+      parameters:
+      - in: "body"
+        name: "usageConsumptionReportRequest"
+        description: "The UsageConsumptionReportRequest to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/UsageConsumptionReportRequest_Create"
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/UsageConsumptionReportRequest"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "UsageConsumptionReportRequest"
+  /usageConsumptionReportRequest/{id}:
+    get:
+      tags:
+      - "usageConsumptionReportRequest"
+      summary: "Retrieves a UsageConsumptionReportRequest by ID"
+      description: "This operation retrieves a UsageConsumptionReportRequest entity.\
+        \ Attribute selection is enabled for all first level attributes."
+      operationId: "retrieveUsageConsumptionReportRequest"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Identifier of the UsageConsumptionReportRequest"
+        required: true
+        type: "string"
+      - name: "fields"
+        in: "query"
+        description: "Comma-separated properties to provide in response"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/UsageConsumptionReportRequest"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "UsageConsumptionReportRequest"
+    delete:
+      tags:
+      - "usageConsumptionReportRequest"
+      summary: "Deletes a UsageConsumptionReportRequest"
+      description: "This operation deletes a UsageConsumptionReportRequest entity."
+      operationId: "deleteUsageConsumptionReportRequest"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Identifier of the UsageConsumptionReportRequest"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Deleted"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "UsageConsumptionReportRequest"
+  /hub:
+    post:
+      tags:
+      - "events subscription"
+      summary: "Register a listener"
+      description: "Sets the communication endpoint address the service instance must\
+        \ use to deliver information about its health state, execution state, failures\
+        \ and metrics."
+      operationId: "registerListener"
+      parameters:
+      - in: "body"
+        name: "data"
+        description: "Data containing the callback endpoint to deliver the information"
+        required: true
+        schema:
+          $ref: "#/definitions/EventSubscriptionInput"
+      responses:
+        201:
+          description: "Subscribed"
+          schema:
+            $ref: "#/definitions/EventSubscription"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "EventsSubscription"
+  /hub/{id}:
+    delete:
+      tags:
+      - "events subscription"
+      summary: "Unregister a listener"
+      description: "Resets the communication endpoint address the service instance\
+        \ must use to deliver information about its health state, execution state,\
+        \ failures and metrics."
+      operationId: "unregisterListener"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id of the registered listener"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Deleted"
+        400:
+          description: "Bad request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "EventsSubscription"
+  /listener/usageConsumptionReportRequestStateChangeNotification:
+    post:
+      tags:
+      - "notification listeners (client side)"
+      summary: "Client listener for entity UsageConsumptionReportRequestStateChangeNotification"
+      description: "Example of a client listener for receiving the notification UsageConsumptionReportRequestStateChangeNotification"
+      operationId: "listenToUsageConsumptionReportRequestStateChangeNotification"
+      parameters:
+      - in: "body"
+        name: "data"
+        description: "The event data"
+        required: true
+        schema:
+          $ref: "#/definitions/UsageConsumptionReportRequestStateChangeNotification"
+      responses:
+        201:
+          description: "Notified"
+          schema:
+            $ref: "#/definitions/EventSubscription"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        405:
+          description: "Method Not allowed"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "NotificationListenersClientSide"
+definitions:
+  ConsumptionSummary:
+    type: "object"
+    properties:
+      counterType:
+        type: "string"
+        description: "Type of the consumption counter. We can give for example a counter\
+          \ of the used value for a bucket (counterType=used for example) or the value\
+          \ of the consumption done out of the bucket(s) (counterType=outOfBucket\
+          \ for example)"
+      level:
+        type: "string"
+        description: "Counter level. The counter can be given globally for the bucket\
+          \ or detailed by user or by network product for example in case of shared\
+          \ bucket"
+      valueName:
+        type: "string"
+        description: "Value of the counter in a formatted string used for display\
+          \ needs for example"
+      consumptionPeriod:
+        description: "Consumption counter period between a start date time and an\
+          \ end date time. For prepaid bucket, the period of counters is between the\
+          \ start date of the bucket and the effective date of the usage consumption\
+          \ report generation. For postpaid bucket, the period of counters is between\
+          \ the last bill date and the effective date of the usage consumption report\
+          \ generation."
+        $ref: "#/definitions/TimePeriod"
+      product:
+        description: "Public identifier associated to the product for which the consumption\
+          \ counter is detailed. If the level of the counter is global (i.e. concerning\
+          \ all the network products), the list of them is not specified. It can be\
+          \ found through the network products listed in the bucket sub-resource"
+        $ref: "#/definitions/NetworkProductRef"
+      user:
+        description: "Reference of the user for which the consumption counter is detailed.\
+          \ If the level of the counter is global (i.e. concerning all the users),\
+          \ the list of them is not specified. It can be found through the users listed\
+          \ in the network products of the bucket sub-resource"
+        $ref: "#/definitions/RelatedParty"
+      value:
+        description: "Numeric value of the bucket counter in a given unit"
+        $ref: "#/definitions/Quantity"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+    description: "The consumption counters (called ConsumptionSummary in the SID model)\
+      \ detail for example the different kind of consumption done on the bucket."
+    example:
+      consumptionPeriod:
+        startDateTime: "2000-01-23T04:56:07.000+00:00"
+        endDateTime: "2000-01-23T04:56:07.000+00:00"
+      product:
+        '@referredType': "@referredType"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "http://example.com/aeiou"
+        publicIdentifier: "publicIdentifier"
+      '@baseType': "@baseType"
+      level: "level"
+      valueName: "valueName"
+      '@type': "@type"
+      '@schemaLocation': "http://example.com/aeiou"
+      counterType: "counterType"
+      user:
+        '@referredType': "@referredType"
+        role: "role"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "@schemaLocation"
+      value:
+        amount: 0.8008282
+        units: "units"
+  NetworkProduct:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the network product"
+      href:
+        type: "string"
+        description: "Reference to the network product"
+      name:
+        type: "string"
+        description: "Network product name"
+      publicIdentifier:
+        type: "string"
+        description: "Public number associated to the network product (msisdn number\
+          \ for mobile line for example)"
+      outOfBucketCounter:
+        type: "array"
+        description: "Counters detailing usage consumption out of the buckets"
+        items:
+          $ref: "#/definitions/ConsumptionSummary"
+      user:
+        type: "array"
+        description: "References of the users of the network product"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+    description: "An instantiated network product (specialization of a product) subscribed\
+      \ by a customer."
+    example:
+      '@baseType': "@baseType"
+      '@type': "@type"
+      name: "name"
+      id: "id"
+      href: "href"
+      '@schemaLocation': "http://example.com/aeiou"
+      publicIdentifier: "publicIdentifier"
+      user:
+      - '@referredType': "@referredType"
+        role: "role"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "@schemaLocation"
+      - '@referredType': "@referredType"
+        role: "role"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "@schemaLocation"
+      outOfBucketCounter:
+      - consumptionPeriod:
+          startDateTime: "2000-01-23T04:56:07.000+00:00"
+          endDateTime: "2000-01-23T04:56:07.000+00:00"
+        product:
+          '@referredType': "@referredType"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+        '@baseType': "@baseType"
+        level: "level"
+        valueName: "valueName"
+        '@type': "@type"
+        '@schemaLocation': "http://example.com/aeiou"
+        counterType: "counterType"
+        user:
+          '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        value:
+          amount: 0.8008282
+          units: "units"
+      - consumptionPeriod:
+          startDateTime: "2000-01-23T04:56:07.000+00:00"
+          endDateTime: "2000-01-23T04:56:07.000+00:00"
+        product:
+          '@referredType': "@referredType"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+        '@baseType': "@baseType"
+        level: "level"
+        valueName: "valueName"
+        '@type': "@type"
+        '@schemaLocation': "http://example.com/aeiou"
+        counterType: "counterType"
+        user:
+          '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        value:
+          amount: 0.8008282
+          units: "units"
+  NetworkProductRef:
+    type: "object"
+    required:
+    - "href"
+    - "id"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the network product"
+      href:
+        type: "string"
+        description: "Reference to the network product"
+      name:
+        type: "string"
+        description: "Network product name"
+      publicIdentifier:
+        type: "string"
+        description: "Public number associated to the product (msisdn number for mobile\
+          \ line for example)"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+      '@referredType':
+        type: "string"
+        description: "Generic attribute indicating the name of the class type of the\
+          \ referred resource entity"
+    description: "Reference of a product"
+    example:
+      '@referredType': "@referredType"
+      '@baseType': "@baseType"
+      '@type': "@type"
+      name: "name"
+      id: "id"
+      href: "href"
+      '@schemaLocation': "http://example.com/aeiou"
+      publicIdentifier: "publicIdentifier"
+  Quantity:
+    type: "object"
+    properties:
+      amount:
+        type: "number"
+        format: "float"
+        description: "Numeric value in a given unit"
+        default: 1.0
+      units:
+        type: "string"
+        description: "Unit"
+    description: "An amount in a given unit"
+    example:
+      amount: 0.8008282
+      units: "units"
+  RelatedParty:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of a related party"
+      href:
+        type: "string"
+        description: "Reference of the related party, could be a party reference or\
+          \ a party role reference"
+      name:
+        type: "string"
+        description: "Name of the related party"
+      role:
+        type: "string"
+        description: "Role of the related party."
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+      '@referredType':
+        type: "string"
+        description: "The actual type of the target instance when needed for disambiguation."
+    description: "RelatedParty reference. A related party defines party or party role\
+      \ linked to a specific entity."
+    example:
+      '@referredType': "@referredType"
+      role: "role"
+      '@baseType': "@baseType"
+      '@type': "@type"
+      name: "name"
+      id: "id"
+      href: "href"
+      '@schemaLocation': "@schemaLocation"
+  TimePeriod:
+    type: "object"
+    properties:
+      endDateTime:
+        type: "string"
+        format: "date-time"
+        description: "End of the time period, using IETC-RFC-3339 format"
+      startDateTime:
+        type: "string"
+        format: "date-time"
+        description: "Start of the time period, using IETC-RFC-3339 format. If you\
+          \ define a start, you must also define an end"
+    description: "A period of time, either as a deadline (endDateTime only) a startDateTime\
+      \ only, or both"
+    example:
+      startDateTime: "2000-01-23T04:56:07.000+00:00"
+      endDateTime: "2000-01-23T04:56:07.000+00:00"
+  UsageConsumptionReport:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "The report is calculated at the time of the request by the server.\
+          \ Generally, this report is not recorded by the server. If it is, an unique\
+          \ identifier of the usage consumption report is given by the server"
+      href:
+        type: "string"
+        description: "Hyperlink to access the usage consumption report. The report\
+          \ is calculated at the time of the request by the server. Generally, this\
+          \ report is not recorded by the server. If it is, an unique identifier of\
+          \ the usage consumption report is given by the server"
+      description:
+        type: "string"
+        description: "Free short text describing the usage consumption report content"
+      effectiveDate:
+        type: "string"
+        format: "date-time"
+        description: "Date and time when the usage consumption report was calculated\
+          \ and generated"
+      name:
+        type: "string"
+        description: "Usage consumption report name"
+      bucket:
+        type: "array"
+        description: "Bucket(s) included in the offer or option subscribed."
+        items:
+          $ref: "#/definitions/UsageVolumeProduct"
+      relatedParty:
+        $ref: "#/definitions/RelatedParty"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+    description: "An usage consumption report enables to know at a given point the\
+      \ balances and the consumption counters related to various buckets (SMS, Voice,\
+      \ Data for example). It could be calculated for a device identified by a public\
+      \ key (msisdn number for a mobile device for example or PSTN or VOIP number\
+      \ for a fix device), for a subscribed offer or option or for an user."
+    example:
+      bucket:
+      - product:
+        - '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+          user:
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          outOfBucketCounter:
+          - consumptionPeriod:
+              startDateTime: "2000-01-23T04:56:07.000+00:00"
+              endDateTime: "2000-01-23T04:56:07.000+00:00"
+            product:
+              '@referredType': "@referredType"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "http://example.com/aeiou"
+              publicIdentifier: "publicIdentifier"
+            '@baseType': "@baseType"
+            level: "level"
+            valueName: "valueName"
+            '@type': "@type"
+            '@schemaLocation': "http://example.com/aeiou"
+            counterType: "counterType"
+            user:
+              '@referredType': "@referredType"
+              role: "role"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "@schemaLocation"
+            value:
+              amount: 0.8008282
+              units: "units"
+          - consumptionPeriod:
+              startDateTime: "2000-01-23T04:56:07.000+00:00"
+              endDateTime: "2000-01-23T04:56:07.000+00:00"
+            product:
+              '@referredType': "@referredType"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "http://example.com/aeiou"
+              publicIdentifier: "publicIdentifier"
+            '@baseType': "@baseType"
+            level: "level"
+            valueName: "valueName"
+            '@type': "@type"
+            '@schemaLocation': "http://example.com/aeiou"
+            counterType: "counterType"
+            user:
+              '@referredType': "@referredType"
+              role: "role"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "@schemaLocation"
+            value:
+              amount: 0.8008282
+              units: "units"
+        - '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+          user:
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          outOfBucketCounter:
+          - consumptionPeriod:
+              startDateTime: "2000-01-23T04:56:07.000+00:00"
+              endDateTime: "2000-01-23T04:56:07.000+00:00"
+            product:
+              '@referredType': "@referredType"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "http://example.com/aeiou"
+              publicIdentifier: "publicIdentifier"
+            '@baseType': "@baseType"
+            level: "level"
+            valueName: "valueName"
+            '@type': "@type"
+            '@schemaLocation': "http://example.com/aeiou"
+            counterType: "counterType"
+            user:
+              '@referredType': "@referredType"
+              role: "role"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "@schemaLocation"
+            value:
+              amount: 0.8008282
+              units: "units"
+          - consumptionPeriod:
+              startDateTime: "2000-01-23T04:56:07.000+00:00"
+              endDateTime: "2000-01-23T04:56:07.000+00:00"
+            product:
+              '@referredType': "@referredType"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "http://example.com/aeiou"
+              publicIdentifier: "publicIdentifier"
+            '@baseType': "@baseType"
+            level: "level"
+            valueName: "valueName"
+            '@type': "@type"
+            '@schemaLocation': "http://example.com/aeiou"
+            counterType: "counterType"
+            user:
+              '@referredType': "@referredType"
+              role: "role"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "@schemaLocation"
+            value:
+              amount: 0.8008282
+              units: "units"
+        '@baseType': "@baseType"
+        bucketCounter:
+        - consumptionPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          '@baseType': "@baseType"
+          level: "level"
+          valueName: "valueName"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          counterType: "counterType"
+          user:
+            '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          value:
+            amount: 0.8008282
+            units: "units"
+        - consumptionPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          '@baseType': "@baseType"
+          level: "level"
+          valueName: "valueName"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          counterType: "counterType"
+          user:
+            '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          value:
+            amount: 0.8008282
+            units: "units"
+        '@type': "@type"
+        bucketBalance:
+        - '@baseType': "@baseType"
+          validFor:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          remainingValue:
+            amount: 0.8008282
+            units: "units"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          remainingValueName: "remainingValueName"
+        - '@baseType': "@baseType"
+          validFor:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          remainingValue:
+            amount: 0.8008282
+            units: "units"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          remainingValueName: "remainingValueName"
+        name: "name"
+        id: "id"
+        '@schemaLocation': "http://example.com/aeiou"
+        isShared: true
+        usageType: "usageType"
+      - product:
+        - '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+          user:
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          outOfBucketCounter:
+          - consumptionPeriod:
+              startDateTime: "2000-01-23T04:56:07.000+00:00"
+              endDateTime: "2000-01-23T04:56:07.000+00:00"
+            product:
+              '@referredType': "@referredType"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "http://example.com/aeiou"
+              publicIdentifier: "publicIdentifier"
+            '@baseType': "@baseType"
+            level: "level"
+            valueName: "valueName"
+            '@type': "@type"
+            '@schemaLocation': "http://example.com/aeiou"
+            counterType: "counterType"
+            user:
+              '@referredType': "@referredType"
+              role: "role"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "@schemaLocation"
+            value:
+              amount: 0.8008282
+              units: "units"
+          - consumptionPeriod:
+              startDateTime: "2000-01-23T04:56:07.000+00:00"
+              endDateTime: "2000-01-23T04:56:07.000+00:00"
+            product:
+              '@referredType': "@referredType"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "http://example.com/aeiou"
+              publicIdentifier: "publicIdentifier"
+            '@baseType': "@baseType"
+            level: "level"
+            valueName: "valueName"
+            '@type': "@type"
+            '@schemaLocation': "http://example.com/aeiou"
+            counterType: "counterType"
+            user:
+              '@referredType': "@referredType"
+              role: "role"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "@schemaLocation"
+            value:
+              amount: 0.8008282
+              units: "units"
+        - '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+          user:
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          outOfBucketCounter:
+          - consumptionPeriod:
+              startDateTime: "2000-01-23T04:56:07.000+00:00"
+              endDateTime: "2000-01-23T04:56:07.000+00:00"
+            product:
+              '@referredType': "@referredType"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "http://example.com/aeiou"
+              publicIdentifier: "publicIdentifier"
+            '@baseType': "@baseType"
+            level: "level"
+            valueName: "valueName"
+            '@type': "@type"
+            '@schemaLocation': "http://example.com/aeiou"
+            counterType: "counterType"
+            user:
+              '@referredType': "@referredType"
+              role: "role"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "@schemaLocation"
+            value:
+              amount: 0.8008282
+              units: "units"
+          - consumptionPeriod:
+              startDateTime: "2000-01-23T04:56:07.000+00:00"
+              endDateTime: "2000-01-23T04:56:07.000+00:00"
+            product:
+              '@referredType': "@referredType"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "http://example.com/aeiou"
+              publicIdentifier: "publicIdentifier"
+            '@baseType': "@baseType"
+            level: "level"
+            valueName: "valueName"
+            '@type': "@type"
+            '@schemaLocation': "http://example.com/aeiou"
+            counterType: "counterType"
+            user:
+              '@referredType': "@referredType"
+              role: "role"
+              '@baseType': "@baseType"
+              '@type': "@type"
+              name: "name"
+              id: "id"
+              href: "href"
+              '@schemaLocation': "@schemaLocation"
+            value:
+              amount: 0.8008282
+              units: "units"
+        '@baseType': "@baseType"
+        bucketCounter:
+        - consumptionPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          '@baseType': "@baseType"
+          level: "level"
+          valueName: "valueName"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          counterType: "counterType"
+          user:
+            '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          value:
+            amount: 0.8008282
+            units: "units"
+        - consumptionPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          '@baseType': "@baseType"
+          level: "level"
+          valueName: "valueName"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          counterType: "counterType"
+          user:
+            '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          value:
+            amount: 0.8008282
+            units: "units"
+        '@type': "@type"
+        bucketBalance:
+        - '@baseType': "@baseType"
+          validFor:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          remainingValue:
+            amount: 0.8008282
+            units: "units"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          remainingValueName: "remainingValueName"
+        - '@baseType': "@baseType"
+          validFor:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          remainingValue:
+            amount: 0.8008282
+            units: "units"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          remainingValueName: "remainingValueName"
+        name: "name"
+        id: "id"
+        '@schemaLocation': "http://example.com/aeiou"
+        isShared: true
+        usageType: "usageType"
+      '@baseType': "@baseType"
+      '@type': "@type"
+      name: "name"
+      description: "description"
+      id: "id"
+      href: "href"
+      relatedParty:
+        '@referredType': "@referredType"
+        role: "role"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "@schemaLocation"
+      '@schemaLocation': "http://example.com/aeiou"
+      effectiveDate: "2000-01-23T04:56:07.000+00:00"
+  UsageConsumptionReportRef:
+    type: "object"
+    required:
+    - "href"
+    - "id"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the usage consumption report given by the\
+          \ server"
+      href:
+        type: "string"
+        description: "Hyperlink to access the usage consumption report"
+      description:
+        type: "string"
+        description: "Free short text describing the usage consumption report content"
+      effectiveDate:
+        type: "string"
+        format: "date-time"
+        description: "Date and time when the usage consumption report was calculated\
+          \ and generated"
+      name:
+        type: "string"
+        description: "Usage consumption report name"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+      '@referredType':
+        type: "string"
+        format: "uri"
+        description: "The type of the referred entity"
+    description: "Reference of an usage consumption report"
+    example:
+      '@referredType': "http://example.com/aeiou"
+      '@baseType': "@baseType"
+      '@type': "@type"
+      name: "name"
+      description: "description"
+      id: "id"
+      href: "href"
+      '@schemaLocation': "http://example.com/aeiou"
+      effectiveDate: "2000-01-23T04:56:07.000+00:00"
+  UsageConsumptionReportRequest:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the usage consumption report request given\
+          \ by the server"
+      href:
+        type: "string"
+        description: "Reference of the usage consumption report request"
+      creationDate:
+        type: "string"
+        format: "date-time"
+        description: "Date and time of the request creation"
+      lastUpdate:
+        type: "string"
+        format: "date-time"
+        description: "Date when the status was last changed"
+      status:
+        type: "string"
+        description: "Status of the usage consumption report request (InProgress or\
+          \ done)"
+      bucket:
+        type: "array"
+        description: "Reference of the buckets for which the usage consumption report\
+          \ is requested"
+        items:
+          $ref: "#/definitions/UsageVolumeProductRef"
+      product:
+        description: "Network product reference for which the usage consumption report\
+          \ is requested"
+        $ref: "#/definitions/NetworkProductRef"
+      relatedParty:
+        type: "array"
+        description: "Reference and role of the related parties for which the usage\
+          \ consumption report is requested"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      usageConsumptionReport:
+        description: "References of the usage consumption report (given when it has\
+          \ been calculated and the status of the request is done)"
+        $ref: "#/definitions/UsageConsumptionReportRef"
+      validPeriod:
+        description: "Validity period"
+        $ref: "#/definitions/TimePeriod"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+    description: "An UsageConsumptionReportRequest allows to manage the calculation\
+      \ request of an usage consumption report"
+    example:
+      product:
+        '@referredType': "@referredType"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "http://example.com/aeiou"
+        publicIdentifier: "publicIdentifier"
+      usageConsumptionReport:
+        '@referredType': "http://example.com/aeiou"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        description: "description"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "http://example.com/aeiou"
+        effectiveDate: "2000-01-23T04:56:07.000+00:00"
+      '@type': "@type"
+      creationDate: "2000-01-23T04:56:07.000+00:00"
+      relatedParty:
+      - '@referredType': "@referredType"
+        role: "role"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "@schemaLocation"
+      - '@referredType': "@referredType"
+        role: "role"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "@schemaLocation"
+      validPeriod:
+        startDateTime: "2000-01-23T04:56:07.000+00:00"
+        endDateTime: "2000-01-23T04:56:07.000+00:00"
+      bucket:
+      - '@referredType': "@referredType"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        '@schemaLocation': "http://example.com/aeiou"
+      - '@referredType': "@referredType"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        '@schemaLocation': "http://example.com/aeiou"
+      '@baseType': "@baseType"
+      lastUpdate: "2000-01-23T04:56:07.000+00:00"
+      id: "id"
+      href: "href"
+      '@schemaLocation': "http://example.com/aeiou"
+      status: "status"
+  UsageConsumptionReportRequest_Create:
+    type: "object"
+    properties:
+      creationDate:
+        type: "string"
+        format: "date-time"
+        description: "Date and time of the request creation"
+      lastUpdate:
+        type: "string"
+        format: "date-time"
+        description: "Date when the status was last changed"
+      status:
+        type: "string"
+        description: "Status of the usage consumption report request (InProgress or\
+          \ done)"
+      bucket:
+        type: "array"
+        description: "Reference of the buckets for which the usage consumption report\
+          \ is requested"
+        items:
+          $ref: "#/definitions/UsageVolumeProductRef"
+      product:
+        description: "Network product reference for which the usage consumption report\
+          \ is requested"
+        $ref: "#/definitions/NetworkProductRef"
+      relatedParty:
+        type: "array"
+        description: "Reference and role of the related parties for which the usage\
+          \ consumption report is requested"
+        items:
+          $ref: "#/definitions/RelatedParty"
+      usageConsumptionReport:
+        description: "References of the usage consumption report (given when it has\
+          \ been calculated and the status of the request is done)"
+        $ref: "#/definitions/UsageConsumptionReportRef"
+      validPeriod:
+        description: "Validity period"
+        $ref: "#/definitions/TimePeriod"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+    description: "An UsageConsumptionReportRequest allows to manage the calculation\
+      \ request of an usage consumption report\nSkipped properties: id,href"
+    example:
+      bucket:
+      - '@referredType': "@referredType"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        '@schemaLocation': "http://example.com/aeiou"
+      - '@referredType': "@referredType"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        '@schemaLocation': "http://example.com/aeiou"
+      product:
+        '@referredType': "@referredType"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "http://example.com/aeiou"
+        publicIdentifier: "publicIdentifier"
+      usageConsumptionReport:
+        '@referredType': "http://example.com/aeiou"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        description: "description"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "http://example.com/aeiou"
+        effectiveDate: "2000-01-23T04:56:07.000+00:00"
+      '@baseType': "@baseType"
+      '@type': "@type"
+      lastUpdate: "2000-01-23T04:56:07.000+00:00"
+      creationDate: "2000-01-23T04:56:07.000+00:00"
+      relatedParty:
+      - '@referredType': "@referredType"
+        role: "role"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "@schemaLocation"
+      - '@referredType': "@referredType"
+        role: "role"
+        '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "@schemaLocation"
+      '@schemaLocation': "http://example.com/aeiou"
+      validPeriod:
+        startDateTime: "2000-01-23T04:56:07.000+00:00"
+        endDateTime: "2000-01-23T04:56:07.000+00:00"
+      status: "status"
+  UsageVolumeBalance:
+    type: "object"
+    properties:
+      remainingValueName:
+        type: "string"
+        description: "Remaining value in a formatted string for the bucket given in\
+          \ the balance unit (for example 1.9 Gb). This formatted string could be\
+          \ used for display needs for example"
+      remainingValue:
+        description: "Numeric remaining value for the bucket given in the unit (for\
+          \ example 1.9). This numeric value could be used for calculation for example"
+        $ref: "#/definitions/Quantity"
+      validFor:
+        description: "Balance period between a start date time and an end date time.\
+          \ For prepaid bucket, the period of the balance is between the  effective\
+          \ date of the usage consumption report generation and the end date of the\
+          \ bucket. For postpaid bucket, the period of the balance is between the\
+          \ effective date of the usage consumption report generation and the next\
+          \ bill date."
+        $ref: "#/definitions/TimePeriod"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+    description: "The balance (called UsageVolumeBalance in the SID model) defines\
+      \ the remaining allowed product usage quantity in terms of volume, time, currency\
+      \ or events. It corresponds to the initial allowed usage quantity minus the\
+      \ usage consumed on the bucket."
+    example:
+      '@baseType': "@baseType"
+      validFor:
+        startDateTime: "2000-01-23T04:56:07.000+00:00"
+        endDateTime: "2000-01-23T04:56:07.000+00:00"
+      remainingValue:
+        amount: 0.8008282
+        units: "units"
+      '@type': "@type"
+      '@schemaLocation': "http://example.com/aeiou"
+      remainingValueName: "remainingValueName"
+  UsageVolumeProduct:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the bucket"
+      isShared:
+        type: "boolean"
+        description: "True if the bucket is shared between several devices or users"
+      name:
+        type: "string"
+        description: "Bucket name"
+      usageType:
+        type: "string"
+        description: "Type of usage concerned by the bucket, such as voice, sms, data"
+      bucketBalance:
+        type: "array"
+        items:
+          $ref: "#/definitions/UsageVolumeBalance"
+      bucketCounter:
+        type: "array"
+        items:
+          $ref: "#/definitions/ConsumptionSummary"
+      product:
+        type: "array"
+        items:
+          $ref: "#/definitions/NetworkProduct"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+    description: "A bucket (called UsageVolumeProduct in the SID model) represents\
+      \ a quantity of usage, as 2 hours national calls or 50 sms for example. It could\
+      \ be either a quantity or an amount in a currency (i.e. It could represent a\
+      \ fixed number of SMS, MMS, minutes of calls, quantity of data, number of events\
+      \ as well as a specific amount in a given currency). It requires one or more\
+      \ network products from which usages will debit the bucket."
+    example:
+      product:
+      - '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "http://example.com/aeiou"
+        publicIdentifier: "publicIdentifier"
+        user:
+        - '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        - '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        outOfBucketCounter:
+        - consumptionPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          '@baseType': "@baseType"
+          level: "level"
+          valueName: "valueName"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          counterType: "counterType"
+          user:
+            '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          value:
+            amount: 0.8008282
+            units: "units"
+        - consumptionPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          '@baseType': "@baseType"
+          level: "level"
+          valueName: "valueName"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          counterType: "counterType"
+          user:
+            '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          value:
+            amount: 0.8008282
+            units: "units"
+      - '@baseType': "@baseType"
+        '@type': "@type"
+        name: "name"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "http://example.com/aeiou"
+        publicIdentifier: "publicIdentifier"
+        user:
+        - '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        - '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        outOfBucketCounter:
+        - consumptionPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          '@baseType': "@baseType"
+          level: "level"
+          valueName: "valueName"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          counterType: "counterType"
+          user:
+            '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          value:
+            amount: 0.8008282
+            units: "units"
+        - consumptionPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          '@baseType': "@baseType"
+          level: "level"
+          valueName: "valueName"
+          '@type': "@type"
+          '@schemaLocation': "http://example.com/aeiou"
+          counterType: "counterType"
+          user:
+            '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          value:
+            amount: 0.8008282
+            units: "units"
+      '@baseType': "@baseType"
+      bucketCounter:
+      - consumptionPeriod:
+          startDateTime: "2000-01-23T04:56:07.000+00:00"
+          endDateTime: "2000-01-23T04:56:07.000+00:00"
+        product:
+          '@referredType': "@referredType"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+        '@baseType': "@baseType"
+        level: "level"
+        valueName: "valueName"
+        '@type': "@type"
+        '@schemaLocation': "http://example.com/aeiou"
+        counterType: "counterType"
+        user:
+          '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        value:
+          amount: 0.8008282
+          units: "units"
+      - consumptionPeriod:
+          startDateTime: "2000-01-23T04:56:07.000+00:00"
+          endDateTime: "2000-01-23T04:56:07.000+00:00"
+        product:
+          '@referredType': "@referredType"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+        '@baseType': "@baseType"
+        level: "level"
+        valueName: "valueName"
+        '@type': "@type"
+        '@schemaLocation': "http://example.com/aeiou"
+        counterType: "counterType"
+        user:
+          '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        value:
+          amount: 0.8008282
+          units: "units"
+      '@type': "@type"
+      bucketBalance:
+      - '@baseType': "@baseType"
+        validFor:
+          startDateTime: "2000-01-23T04:56:07.000+00:00"
+          endDateTime: "2000-01-23T04:56:07.000+00:00"
+        remainingValue:
+          amount: 0.8008282
+          units: "units"
+        '@type': "@type"
+        '@schemaLocation': "http://example.com/aeiou"
+        remainingValueName: "remainingValueName"
+      - '@baseType': "@baseType"
+        validFor:
+          startDateTime: "2000-01-23T04:56:07.000+00:00"
+          endDateTime: "2000-01-23T04:56:07.000+00:00"
+        remainingValue:
+          amount: 0.8008282
+          units: "units"
+        '@type': "@type"
+        '@schemaLocation': "http://example.com/aeiou"
+        remainingValueName: "remainingValueName"
+      name: "name"
+      id: "id"
+      '@schemaLocation': "http://example.com/aeiou"
+      isShared: true
+      usageType: "usageType"
+  UsageVolumeProductRef:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the bucket"
+      name:
+        type: "string"
+        description: "Bucket name"
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class"
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name"
+      '@referredType':
+        type: "string"
+        description: "Generic attribute indicating the name of the class type of the\
+          \ referred resource entity"
+    description: "Reference of a bucket"
+    example:
+      '@referredType': "@referredType"
+      '@baseType': "@baseType"
+      '@type': "@type"
+      name: "name"
+      id: "id"
+      '@schemaLocation': "http://example.com/aeiou"
+  EventSubscription:
+    type: "object"
+    required:
+    - "callback"
+    - "id"
+    properties:
+      id:
+        type: "string"
+        description: "Id of the listener"
+      callback:
+        type: "string"
+        description: "The callback being registered."
+      query:
+        type: "string"
+        description: "additional data to be passed"
+    description: "Sets the communication endpoint address the service instance must\
+      \ use to deliver notification information"
+    example:
+      query: "query"
+      callback: "callback"
+      id: "id"
+  EventSubscriptionInput:
+    type: "object"
+    required:
+    - "callback"
+    properties:
+      callback:
+        type: "string"
+        description: "The callback being registered."
+      query:
+        type: "string"
+        description: "additional data to be passed"
+    description: "Sets the communication endpoint address the service instance must\
+      \ use to deliver notification information"
+    example:
+      query: "query"
+      callback: "callback"
+  UsageConsumptionReportRequestStateChangeNotification:
+    type: "object"
+    properties:
+      eventId:
+        type: "string"
+        description: "The identifier of the notification"
+      eventTime:
+        type: "string"
+        format: "date-time"
+        description: "Time of the event occurrence"
+      eventType:
+        type: "string"
+        description: "The type of the notification"
+      fieldPath:
+        type: "string"
+        description: "The path identifying the object field concerned by this notification"
+      resourcePath:
+        type: "string"
+        description: "The path identifying the resource object concerned by this notification"
+      event:
+        description: "The event linked to the involved resource object"
+        $ref: "#/definitions/UsageConsumptionReportRequestStateChangeEvent"
+    description: "The notification data structure"
+    example:
+      eventId: "eventId"
+      resourcePath: "resourcePath"
+      eventTime: "2000-01-23T04:56:07.000+00:00"
+      fieldPath: "fieldPath"
+      eventType: "eventType"
+      event:
+        usageConsumptionReportRequest:
+          product:
+            '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            publicIdentifier: "publicIdentifier"
+          usageConsumptionReport:
+            '@referredType': "http://example.com/aeiou"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            description: "description"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "http://example.com/aeiou"
+            effectiveDate: "2000-01-23T04:56:07.000+00:00"
+          '@type': "@type"
+          creationDate: "2000-01-23T04:56:07.000+00:00"
+          relatedParty:
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          - '@referredType': "@referredType"
+            role: "role"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            href: "href"
+            '@schemaLocation': "@schemaLocation"
+          validPeriod:
+            startDateTime: "2000-01-23T04:56:07.000+00:00"
+            endDateTime: "2000-01-23T04:56:07.000+00:00"
+          bucket:
+          - '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            '@schemaLocation': "http://example.com/aeiou"
+          - '@referredType': "@referredType"
+            '@baseType': "@baseType"
+            '@type': "@type"
+            name: "name"
+            id: "id"
+            '@schemaLocation': "http://example.com/aeiou"
+          '@baseType': "@baseType"
+          lastUpdate: "2000-01-23T04:56:07.000+00:00"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          status: "status"
+  UsageConsumptionReportRequestStateChangeEvent:
+    type: "object"
+    properties:
+      usageConsumptionReportRequest:
+        description: "The involved resource data for the event"
+        $ref: "#/definitions/UsageConsumptionReportRequest"
+    description: "The event data structure"
+    example:
+      usageConsumptionReportRequest:
+        product:
+          '@referredType': "@referredType"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          publicIdentifier: "publicIdentifier"
+        usageConsumptionReport:
+          '@referredType': "http://example.com/aeiou"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          description: "description"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "http://example.com/aeiou"
+          effectiveDate: "2000-01-23T04:56:07.000+00:00"
+        '@type': "@type"
+        creationDate: "2000-01-23T04:56:07.000+00:00"
+        relatedParty:
+        - '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        - '@referredType': "@referredType"
+          role: "role"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          href: "href"
+          '@schemaLocation': "@schemaLocation"
+        validPeriod:
+          startDateTime: "2000-01-23T04:56:07.000+00:00"
+          endDateTime: "2000-01-23T04:56:07.000+00:00"
+        bucket:
+        - '@referredType': "@referredType"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          '@schemaLocation': "http://example.com/aeiou"
+        - '@referredType': "@referredType"
+          '@baseType': "@baseType"
+          '@type': "@type"
+          name: "name"
+          id: "id"
+          '@schemaLocation': "http://example.com/aeiou"
+        '@baseType': "@baseType"
+        lastUpdate: "2000-01-23T04:56:07.000+00:00"
+        id: "id"
+        href: "href"
+        '@schemaLocation': "http://example.com/aeiou"
+        status: "status"
+  Error:
+    type: "object"
+    required:
+    - "code"
+    - "reason"
+    properties:
+      code:
+        type: "integer"
+        description: "Application relevant detail, defined in the API or a common\
+          \ list."
+      reason:
+        type: "string"
+        description: "Explanation of the reason for the error which can be shown to\
+          \ a client user."
+      message:
+        type: "string"
+        description: "More details and corrective actions related to the error which\
+          \ can be shown to a client user."
+      status:
+        type: "integer"
+        description: "HTTP Error code extension"
+      referenceError:
+        type: "string"
+        format: "uri"
+        description: "URI of documentation describing the error."
+      '@baseType':
+        type: "string"
+        description: "When sub-classing, this defines the super-class."
+      '@schemaLocation':
+        type: "string"
+        format: "uri"
+        description: "A URI to a JSON-Schema file that defines additional attributes\
+          \ and relationships"
+      '@type':
+        type: "string"
+        description: "When sub-classing, this defines the sub-class entity name."
+    description: "Used when an API throws an Error, typically with a HTTP error response-code\
+      \ (3xx, 4xx, 5xx)"
